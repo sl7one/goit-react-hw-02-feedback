@@ -1,18 +1,64 @@
-import styled from 'styled-components';
-import Widget from './widget/Widget';
+import React from 'react';
+import FeedBackOptions from './widget/FeedBackOptions';
+import Section from './widget/Section';
+import Statistics from './widget/Statistic';
+import Notification from './widget/Notification';
 
-const Container = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  font-size: 40px;
-  color: #010101;
-`;
+const btns = ['Good', 'Neutral', 'Bad'];
 
-export const App = () => {
-  return (
-    <Container>
-      <Widget />
-    </Container>
-  );
-};
+class App extends React.Component {
+  state = {
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  };
+  countTotalFeedback = () => {
+    return this.state.good + this.state.neutral + this.state.bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    if (!this.countTotalFeedback()) {
+      return `0%`;
+    }
+    const result = (
+      (this.state.good / this.countTotalFeedback()) *
+      100
+    ).toFixed(2);
+    return `${result}%`;
+  };
+
+  onClick = event => {
+    const target = event.target;
+    this.setState(prevState => {
+      return {
+        [target.dataset.id]: prevState[target.dataset.id] + 1,
+      };
+    });
+  };
+
+  render() {
+    return (
+      <>
+        <Section title="Please leave feedback">
+          <FeedBackOptions options={btns} onLeaveFeedback={this.onClick} />
+        </Section>
+
+        <Section title="Statistics">
+          {this.countTotalFeedback() ? (
+            <Statistics
+              good={this.state.good}
+              neutral={this.state.neutral}
+              bad={this.state.bad}
+              total={this.countTotalFeedback()}
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+            />
+          ) : (
+            <Notification message="There is no feedback" />
+          )}
+        </Section>
+      </>
+    );
+  }
+}
+
+export default App;

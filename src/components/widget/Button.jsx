@@ -1,16 +1,14 @@
-import styled from 'styled-components';
-const Btn = styled.button`
-  padding: 15px;
-  outline: none;
-  border-radius: 5px;
-  background-color: teal;
-  color: white;
-  font-size: 18px;
-  &:hover {
-    background-color: orange;
-  }
-  cursor: pointer;
-`;
+import PropTypes from 'prop-types';
+import s from './Styles.styled';
 
-const Button = ({ title, onClick }) => <Btn onClick={onClick}>{title}</Btn>;
+const Button = ({ title, onClick }) => (
+  <s.Btn type="button" data-id={title.toLowerCase()} onClick={onClick}>
+    {title}
+  </s.Btn>
+);
 export default Button;
+
+Button.propTypes = {
+  title: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
