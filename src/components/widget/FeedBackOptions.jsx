@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 
 const FeedBackOptions = ({ options, onLeaveFeedback }) => {
+  console.log(onLeaveFeedback);
   return (
     <>
       {options.map(name => {
